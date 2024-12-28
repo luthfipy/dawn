@@ -1,0 +1,7 @@
+[
+    {
+        "AppID": "{app_id}",
+        "Email": "{email}",
+        "Token": "{token}"
+    }
+]
