@@ -65,11 +65,12 @@ async def main():
     proxies = None
     extension_id = "fpdkjdnhkakefebpekbdhillbhonfjjp"
     number_of_tabs = 0
-    success = False
-    while not success:
-        success = await execute_account(accounts[0], proxies, extension_id, number_of_tabs)
-    logger.info("Restarting after 180 seconds.")
-    await asyncio.sleep(180)
+    while True:
+        success = False
+        while not success:
+            success = await execute_account(accounts[0], proxies, extension_id, number_of_tabs)
+        logger.info("Restarting after 180 seconds.")
+        await asyncio.sleep(180)
 
 if __name__ == '__main__':
     asyncio.run(main())
