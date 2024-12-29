@@ -28,7 +28,7 @@ fi
 
 if cat config.json | grep -q {app_id}; then
         echo "Please input your app_id"
-        read -p "APP ID: " app_id
+        read -p "App ID: " app_id
         $(sed -i "s/{app_id}/$app_id/g" config.json)
 fi
 
