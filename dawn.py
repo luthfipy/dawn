@@ -69,8 +69,9 @@ async def main():
         success = False
         while not success:
             success = await execute_account(accounts[0], proxies, extension_id, number_of_tabs)
-            logger.info(f"Retrying keep alive for {account['Email']} in 1 second")
-            await asyncio.sleep(1)
+            if not success:
+                logger.info(f"Retrying keep alive for {account['Email']} in 3 seconds")
+                await asyncio.sleep(3)
         logger.info("Restarting after 60 seconds.")
         await asyncio.sleep(60)
 
