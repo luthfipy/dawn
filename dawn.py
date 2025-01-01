@@ -61,6 +61,7 @@ async def execute_account(account, proxies, extension_id, number_of_tabs):
 async def main():
     with open("config.json", "r") as config_file:
         accounts = json.load(config_file)
+    account = accounts[0]
     # proxies = await read_proxies_from_file("proxy.txt")
     proxies = None
     extension_id = "fpdkjdnhkakefebpekbdhillbhonfjjp"
