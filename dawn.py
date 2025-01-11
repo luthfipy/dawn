@@ -45,8 +45,7 @@ async def read_proxies_from_file(file_path):
         logger.error("Proxy file not found.")
         return []
 
-async def execute_account(account, proxies, extension_id, number_of_tabs):
-    proxy = random.choice(proxies) if proxies else None
+async def execute_account(account, proxy, extension_id, number_of_tabs):
     logger.info(f"Using proxy: {proxy}")
     response = await send_keepalive_request(
         account["AppID"], account["Token"], account["Email"], extension_id, number_of_tabs, proxy
@@ -61,19 +60,17 @@ async def execute_account(account, proxies, extension_id, number_of_tabs):
 async def main():
     with open("config.json", "r") as config_file:
         accounts = json.load(config_file)
+        
     account = accounts[0]
-    # proxies = await read_proxies_from_file("proxy.txt")
-    proxies = None
+    proxies = await read_proxies_from_file("proxy.txt")
     extension_id = "fpdkjdnhkakefebpekbdhillbhonfjjp"
     number_of_tabs = 0
     while True:
-        success = False
-        while not success:
-            success = await execute_account(accounts[0], proxies, extension_id, number_of_tabs)
+        for proxy in proxies:
+            success = await execute_account(account, proxy, extension_id, number_of_tabs)
             if not success:
-                logger.info(f"Retrying keep alive for {account['Email']} in 3 seconds")
-                await asyncio.sleep(3)
-        logger.info("Restarting after 60 seconds.")
+                logger.info(f"Moving to the next proxy after failure: {proxy}")
+        logger.info("All proxies processed. Restarting after 60 seconds.")
         await asyncio.sleep(60)
 
 if __name__ == '__main__':
